@@ -1,0 +1,197 @@
+<!-- 
+demo page / introduction for wkt2geojson
+this page is based on http://tyrasd.github.io/osmtogeojson
+-->
+<html>
+<head>
+    <title>wkt2geojson</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <script type="text/javascript">
+        var map;
+        var selected = null;
+        var infowindow = null;
+		var map_poly = null;
+
+        function initialize() {
+            map = L.map('map').setView([51.505, -0.09], 13);
+            // add an OpenStreetMap tile layer
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        }
+    </script>
+      <script type="text/javascript" src="wkt2geojson.js"></script>
+	<script type="text/javascript">
+
+	function showOnMap(){
+		if (map_poly) map.removeLayer(map_poly);
+		geom = document.getElementById("geom").value;
+		geoJson = wkt2geojson(geom);
+        globalBounds = false;
+	    if (geoJson.type == "Linestring") {
+	        geoJson_coords=geoJson.coordinates;
+	    } else {
+	        geoJson_coords=geoJson.coordinates[0];
+	    };
+        if (!globalBounds)
+            globalBounds = L.latLngBounds(
+                [geoJson_coords[0][1], geoJson_coords[0][0] ],
+                [geoJson_coords[1][1], geoJson_coords[1][0] ]);
+        for (p in geoJson_coords) {
+            globalBounds.extend(L.latLng(geoJson_coords[p][1], geoJson_coords[p][0]));
+        }
+		map_poly = L.geoJson([geoJson],{
+			color: '#0000FF',
+			opacity: 1.0,
+			weight: 3,
+			fillColor: '#0000FF',
+			fillOpacity: 0.35
+		});
+		map_poly.addTo(map);
+        if (globalBounds) {
+            map.fitBounds(globalBounds)
+        };
+	}
+
+	</script>
+    <style type="text/css">
+        body {
+            font-size: 18px;
+            background: white;
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            width: 960px;
+            margin: 50px auto;
+            color: #222;
+            line-height: 1.7em
+        }
+
+        a { color: black; }
+
+        li {
+            line-height: 1.7em;
+            text-align: left;
+            list-style: none;
+        } 
+
+        textarea, input { outline: none; }
+
+        #left {
+            width: 49%;
+            float: left;
+            text-align: center;
+        }
+
+        #geom, #map {
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            height: 320px;           
+            margin-bottom: 20px;
+        }
+
+        #right {
+            width: 49%;
+            float: right;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            text-shadow: 0px 0px 1px black;
+            border-radius: 3px;
+            color: white;
+            background: #A33;
+            padding: 10px 15px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .button:hover { 
+            background: #833;
+        }
+
+        .button:active {
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.75);
+        }
+
+        textarea {
+            font-size: 13px;
+            line-height: 1.5em;
+            padding: 7px 10px;
+        }
+
+
+        #top {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        #name {
+            font-size: 44px;
+            letter-spacing: -1px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        #example {
+            clear: both;
+            width: 100%;
+            height: 500px;
+            align: center;
+        }
+
+        #about {
+            width: 720px;
+            margin: 0 auto;
+        }
+
+        #download {
+            margin: 50px auto 0 auto;
+            text-align: center;
+        }
+
+        #dl {
+            background: #569834;
+            padding: 7px 10px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            font-size: 32px;
+        }
+        .disc { list-style: disc; }
+    </style>
+</head>
+<body onload="initialize();">
+        <div id="top">
+            <span id="name">wkt2geojson</span> converts WKT data to GeoJSON
+        </div>
+        <div id="example">
+            <div id="left">
+                <h3>WKT data</h3>
+                <textarea id="geom" contenteditable="true" placeholder="POLYGON((30 10,30 40,50 40,50 10,30 10))"></textarea>
+            </div>
+            <div id="right">
+                <h3>GeoJSON on a map</h3>
+                <div id="map"></div>
+            </div>
+        </div>
+            <center><a class="button" onClick="showOnMap()">Display WKT&rarr;</a></center>		
+        <div id="about">
+            <p>wkt2geojson is a Javascript module for converting WKT data to GeoJSON. <br/>This WKT conversion code was written for the GiveMeData project.</p>
+
+            <div id="download">
+                    github: <a href="https://github.com/canaltp/wkt2geojson">canaltp/wkt2geojson</a><br/>
+                    license: <a href="https://github.com/tyrasd/osmtogeojson/blob/gh-pages/LICENSE">MIT</a><br/>
+					
+					<a href="http://www.navitia.io/"><img src='Navitia_logo.png'></a>
+					<a href="http://www.canaltp.fr/"><img src='canaltp_logo.png' ></a>
+                </p>
+            </div>
+        </div>
+    </table>
+</body>
+</html>
