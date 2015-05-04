@@ -30,7 +30,7 @@ this page is based on http://tyrasd.github.io/osmtogeojson
 		geom = document.getElementById("geom").value;
 		geoJson = wkt2geojson(geom);
         globalBounds = false;
-	    if (geoJson.type == "Linestring") {
+	    if (geoJson.type == "LineString") {
 	        geoJson_coords=geoJson.coordinates;
 	    } else {
 	        geoJson_coords=geoJson.coordinates[0];
