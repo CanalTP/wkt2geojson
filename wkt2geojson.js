@@ -9,7 +9,6 @@
 				    coord=coord_list[i].split(" ");
 				    geojson.coordinates.push([parseFloat(coord[0]), parseFloat(coord[1])]);
 				}
-				console.log(geojson.coordinates);
 			} else if (wkt.search("POLYGON") == 0){
 				geojson = {"type":"Polygon", "coordinates":[[]]};
 				str = wkt.substring("POLYGON((".length, wkt.length-2);
