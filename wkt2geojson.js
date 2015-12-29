@@ -2,8 +2,8 @@
 			str="";
 		//POLYGON((0.0524887245 46.34721813,0.0524887245 48.938372,3.128101325 48.938372,3.128101325 46.34721813,0.0524887245 46.34721813))
 			if (wkt.search("LINESTRING") == 0){
-				geojson = {"type":"Linestring", "coordinates":[]};
-				str = wkt.substring("LINESTRING((".length, wkt.length-2);
+				geojson = {"type":"LineString", "coordinates":[]};
+				str = wkt.substring("LINESTRING(".length, wkt.length-1);
 				coord_list=str.split(",");
 				for (var i in coord_list){
 				    coord=coord_list[i].split(" ");
