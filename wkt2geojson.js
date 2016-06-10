@@ -13,9 +13,8 @@
 				geojson = {"type":"Point", "coordinates":[]};
 				coord_list = wkt.substring("POINT(".length, wkt.length-1);
 			    coord = coord_list.split(" ");
-				console.log(coord);
-			    geojson.coordinates.push([parseFloat(coord[0]), parseFloat(coord[1])]);
-				console.log(geojson);
+				geojson.coordinates.push(parseFloat(coord[0]));
+				geojson.coordinates.push(parseFloat(coord[1]));
 			} else if (wkt.search("POLYGON") == 0){
 				geojson = {"type":"Polygon", "coordinates":[[]]};
 				str = wkt.substring("POLYGON((".length, wkt.length-2);
