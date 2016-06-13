@@ -25,36 +25,20 @@ this page is based on http://tyrasd.github.io/osmtogeojson
       <script type="text/javascript" src="wkt2geojson.js"></script>
 	<script type="text/javascript">
 
-	function showOnMap(){
-		if (map_poly) map.removeLayer(map_poly);
-		geom = document.getElementById("geom").value;
-		geoJson = wkt2geojson(geom);
-        globalBounds = false;
-	    if ((geoJson.type == "LineString") || (geoJson.type == "Point")) {
-	        geoJson_coords=geoJson.coordinates;
-	    } else {
-	        geoJson_coords=geoJson.coordinates[0];
-	    };
-        if (!globalBounds){
-            globalBounds = L.latLngBounds(
-                [geoJson_coords[0][1], geoJson_coords[0][0] ],
-                [geoJson_coords[0][1], geoJson_coords[0][0] ]);
-        }
-        for (p in geoJson_coords) {
-            globalBounds.extend(L.latLng(geoJson_coords[p][1], geoJson_coords[p][0]));
-        }
-		map_poly = L.geoJson([geoJson],{
-			color: '#0000FF',
-			opacity: 1.0,
-			weight: 3,
-			fillColor: '#0000FF',
-			fillOpacity: 0.35
-		});
-		map_poly.addTo(map);
-        if (globalBounds) {
-            map.fitBounds(globalBounds)
-        };
-	}
+  function showOnMap() {
+    if (map_poly) map.removeLayer(map_poly);
+    geom = document.getElementById("geom").value;
+    geoJson = wkt2geojson(geom);
+    map_poly = L.geoJson([geoJson], {
+        color: '#0000FF',
+        opacity: 1.0,
+        weight: 3,
+        fillColor: '#0000FF',
+        fillOpacity: 0.35
+    });
+    map_poly.addTo(map);
+    map.fitBounds(map_poly.getBounds());
+  }
 
 	</script>
     <style type="text/css">
