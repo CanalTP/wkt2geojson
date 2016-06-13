@@ -1,4 +1,4 @@
-<!-- 
+<!--
 demo page / introduction for wkt2geojson
 this page is based on http://tyrasd.github.io/osmtogeojson
 -->
@@ -25,35 +25,20 @@ this page is based on http://tyrasd.github.io/osmtogeojson
       <script type="text/javascript" src="wkt2geojson.js"></script>
 	<script type="text/javascript">
 
-	function showOnMap(){
-		if (map_poly) map.removeLayer(map_poly);
-		geom = document.getElementById("geom").value;
-		geoJson = wkt2geojson(geom);
-        globalBounds = false;
-	    if (geoJson.type == "LineString") {
-	        geoJson_coords=geoJson.coordinates;
-	    } else {
-	        geoJson_coords=geoJson.coordinates[0];
-	    };
-        if (!globalBounds)
-            globalBounds = L.latLngBounds(
-                [geoJson_coords[0][1], geoJson_coords[0][0] ],
-                [geoJson_coords[1][1], geoJson_coords[1][0] ]);
-        for (p in geoJson_coords) {
-            globalBounds.extend(L.latLng(geoJson_coords[p][1], geoJson_coords[p][0]));
-        }
-		map_poly = L.geoJson([geoJson],{
-			color: '#0000FF',
-			opacity: 1.0,
-			weight: 3,
-			fillColor: '#0000FF',
-			fillOpacity: 0.35
-		});
-		map_poly.addTo(map);
-        if (globalBounds) {
-            map.fitBounds(globalBounds)
-        };
-	}
+  function showOnMap() {
+    if (map_poly) map.removeLayer(map_poly);
+    geom = document.getElementById("geom").value;
+    geoJson = wkt2geojson(geom);
+    map_poly = L.geoJson([geoJson], {
+        color: '#0000FF',
+        opacity: 1.0,
+        weight: 3,
+        fillColor: '#0000FF',
+        fillOpacity: 0.35
+    });
+    map_poly.addTo(map);
+    map.fitBounds(map_poly.getBounds());
+  }
 
 	</script>
     <style type="text/css">
@@ -73,7 +58,7 @@ this page is based on http://tyrasd.github.io/osmtogeojson
             line-height: 1.7em;
             text-align: left;
             list-style: none;
-        } 
+        }
 
         textarea, input { outline: none; }
 
@@ -87,7 +72,7 @@ this page is based on http://tyrasd.github.io/osmtogeojson
             width: 100%;
             background: white;
             border: 1px solid #ccc;
-            height: 320px;           
+            height: 320px;
             margin-bottom: 20px;
         }
 
@@ -109,7 +94,7 @@ this page is based on http://tyrasd.github.io/osmtogeojson
             text-align: center;
         }
 
-        .button:hover { 
+        .button:hover {
             background: #833;
         }
 
@@ -179,14 +164,14 @@ this page is based on http://tyrasd.github.io/osmtogeojson
                 <div id="map"></div>
             </div>
         </div>
-            <center><a class="button" onClick="showOnMap()">Display WKT&rarr;</a></center>		
+            <center><a class="button" onClick="showOnMap()">Display WKT&rarr;</a></center>
         <div id="about">
             <p>wkt2geojson is a Javascript module for converting WKT data to GeoJSON. <br/>This WKT conversion code was written for the GiveMeData project.</p>
 
             <div id="download">
                     github: <a href="https://github.com/canaltp/wkt2geojson">canaltp/wkt2geojson</a><br/>
                     license: <a href="https://github.com/canaltp/wkt2geojson/blob/gh-pages/LICENSE">MIT</a><br/>
-					
+
 					<a href="http://www.navitia.io/"><img src='Navitia_logo.png'></a>
 					<a href="http://www.canaltp.fr/"><img src='canaltp_logo.png' ></a>
                 </p>
